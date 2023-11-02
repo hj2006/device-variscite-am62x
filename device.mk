@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-PRODUCT_SOONG_NAMESPACES += device/ti/am62x/
+PRODUCT_SOONG_NAMESPACES += device/variscite/am62x/
 
 # AVB
 ifeq ($(TARGET_BUILD_VARIANT), user)
@@ -21,8 +21,8 @@ TARGET_AVB_ENABLE := true
 endif
 
 # Kernel part
-LOCAL_KERNEL := device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/Image.lz4
-LOCAL_DTB := device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)
+LOCAL_KERNEL := device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/Image.lz4
+LOCAL_DTB := device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)
 
 PRODUCT_COPY_FILES += \
         $(LOCAL_KERNEL):kernel
@@ -38,7 +38,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/retrofit.mk)
 
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
-DEVICE_PACKAGE_OVERLAYS := device/ti/am62x/overlay
+DEVICE_PACKAGE_OVERLAYS := device/variscite/am62x/overlay
 
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
@@ -176,7 +176,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Public Libraries
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+    device/variscite/am62x/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 
 # Vulkan
 PRODUCT_COPY_FILES += \
@@ -203,8 +203,8 @@ PRODUCT_PACKAGES += \
 # audio policy configuration
 USE_XML_AUDIO_POLICY_CONF := 1
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/audio_hal_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.am62x.xml \
-    device/ti/am62x/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+    device/variscite/am62x/audio_hal_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.am62x.xml \
+    device/variscite/am62x/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
     frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
     frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
@@ -247,40 +247,40 @@ PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.software.voice_recognizers.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.voice_recognizers.xml \
         frameworks/native/data/etc/android.hardware.ethernet.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.ethernet.xml \
         frameworks/native/data/etc/android.software.device_admin.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_admin.xml \
-        device/ti/am62x/android.hardware.hardware_keystore.optee-keymaster.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.optee-keymaster.xml \
+        device/variscite/am62x/android.hardware.hardware_keystore.optee-keymaster.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.optee-keymaster.xml \
         frameworks/native/data/etc/android.software.secure_lock_screen.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.secure_lock_screen.xml
 
 PRODUCT_COPY_FILES += \
-        device/ti/am62x/init.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.am62x.rc \
-        device/ti/am62x/init.am62x.zygote_wakelock.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.zygote_wakelock.rc \
-        device/ti/am62x/init.am62x.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.usb.rc \
-        device/ti/am62x/ueventd.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
+        device/variscite/am62x/init.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.am62x.rc \
+        device/variscite/am62x/init.am62x.zygote_wakelock.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.zygote_wakelock.rc \
+        device/variscite/am62x/init.am62x.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.usb.rc \
+        device/variscite/am62x/ueventd.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
 
 # fstab
 ifeq ($(TARGET_SDCARD_BOOT), true)
 ifeq ($(TARGET_AVB_ENABLE), true)
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/ti/am62x/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 else
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/fstab.am62x.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/ti/am62x/fstab.am62x.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x/fstab.am62x.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x/fstab.am62x.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 endif
 else
 ifeq ($(TARGET_AVB_ENABLE), true)
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/fstab.am62x.avb:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/ti/am62x/fstab.am62x.avb:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x/fstab.am62x.avb:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x/fstab.am62x.avb:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 else
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/fstab.am62x:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/ti/am62x/fstab.am62x:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x/fstab.am62x:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x/fstab.am62x:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 endif
 endif
 # RecoveryOS
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/init.recovery.am62x.rc:recovery/root/vendor/etc/init/init.recovery.am62x.rc
+    device/variscite/am62x/init.recovery.am62x.rc:recovery/root/vendor/etc/init/init.recovery.am62x.rc
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -290,7 +290,7 @@ PRODUCT_COPY_FILES += \
 
 # Media configuration
 PRODUCT_COPY_FILES += \
-        device/ti/am62x/am62x.media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
+        device/variscite/am62x/am62x.media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
 
 # Memtrack
 PRODUCT_PACKAGES += \
@@ -307,7 +307,7 @@ PRODUCT_PACKAGES += \
 # Enable USB Camera
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.5-external-service
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/camera/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
+    device/variscite/am62x/camera/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
 
 PRODUCT_COPY_FILES +=  \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -317,8 +317,8 @@ PRODUCT_COPY_FILES +=  \
 
 # CSI Camera using libcamera
 PRODUCT_COPY_FILES += \
-     device/ti/am62x/camera/camera_hal.yaml:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/camera_hal.yaml \
-     device/ti/am62x/camera/android.hardware.camera.provider@2.5-service_64_am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.camera.provider@2.5-service_64_am62x.rc
+     device/variscite/am62x/camera/camera_hal.yaml:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/camera_hal.yaml \
+     device/variscite/am62x/camera/android.hardware.camera.provider@2.5-service_64_am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.camera.provider@2.5-service_64_am62x.rc
 
 PRODUCT_PACKAGES_DEBUG += cam
 
@@ -350,4 +350,4 @@ PRODUCT_PACKAGES_DEBUG += cabin_demo
 $(call inherit-product-if-exists, hardware/ti/am62x/am62x.mk)
 
 # Include vendor binaries
-$(call inherit-product-if-exists, vendor/ti/am62x/am62x.mk)
+$(call inherit-product-if-exists, vendor/variscite/am62x/am62x.mk)

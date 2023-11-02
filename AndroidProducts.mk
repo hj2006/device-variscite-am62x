@@ -15,11 +15,8 @@
 #
 
 PRODUCT_MAKEFILES := \
-	$(LOCAL_DIR)/am62x.mk \
-	$(LOCAL_DIR)/auto/am62x_car.mk \
+	$(LOCAL_DIR)/am62x-var-som.mk
 	
 COMMON_LUNCH_CHOICES := \
-	am62x-userdebug \
-	am62x-user \
-	am62x_car-userdebug \
-	am62x_car-user
+	am62x-var-som-userdebug \
+	am62x-var-som-user

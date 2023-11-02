@@ -72,10 +72,10 @@ define optee-add-all-xtest-ta
 $(foreach ta,$(XTEST_TRUSTED_APPLICATIONS), $(call optee-add-ta, $(1)/$(ta)))
 endef
 
-$(call optee-add-ta, vendor/ti/am62x/optee/ta/380231ac-fb99-47ad-a689-9e017eb6e78a.ta) # supp_plugin
-$(call optee-add-all-xtest-ta, vendor/ti/am62x/optee/ta)
+$(call optee-add-ta, vendor/variscite/am62x/optee/ta/380231ac-fb99-47ad-a689-9e017eb6e78a.ta) # supp_plugin
+$(call optee-add-all-xtest-ta, vendor/variscite/am62x/optee/ta)
 
 # gatekeeper
-$(call optee-add-ta, vendor/ti/am62x/optee/ta/4d573443-6a56-4272-ac6f-2425af9ef9bb.ta)
+$(call optee-add-ta, vendor/variscite/am62x/optee/ta/4d573443-6a56-4272-ac6f-2425af9ef9bb.ta)
 # keymaster
-$(call optee-add-ta, vendor/ti/am62x/optee/ta/dba51a17-0563-11e7-93b1-6fa7b0071a51.ta)
+$(call optee-add-ta, vendor/variscite/am62x/optee/ta/dba51a17-0563-11e7-93b1-6fa7b0071a51.ta)

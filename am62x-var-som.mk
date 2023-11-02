@@ -19,11 +19,11 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, device/ti/am62x/device.mk)
 
-PRODUCT_NAME := am62x
-PRODUCT_DEVICE := am62x
+PRODUCT_NAME := am62x-var-som
+PRODUCT_DEVICE := am62x-var-som
 PRODUCT_BRAND := TI
-PRODUCT_MODEL := AOSP on AM62X EVM
-PRODUCT_MANUFACTURER := TexasInstruments
+PRODUCT_MODEL := AOSP on VAR-SOM-AM62X
+PRODUCT_MANUFACTURER := Variscite
 PRODUCT_CHARACTERISTICS := tablet
 
 

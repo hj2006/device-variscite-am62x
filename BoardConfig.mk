@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 
-TARGET_BOARD_PLATFORM := am62x
-TARGET_BOOTLOADER_BOARD_NAME := am62x
+TARGET_BOARD_PLATFORM := am62x-var-som
+TARGET_BOOTLOADER_BOARD_NAME := am62x-var-som
 
 # AVB
 ifeq ($(TARGET_BUILD_VARIANT), user)
@@ -72,7 +72,7 @@ endif
 
 # FS Configuration
 BOARD_BOOTIMAGE_PARTITION_SIZE := 41943040 # 40MiB
-BOARD_PREBUILT_DTBOIMAGE := device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dtbo.img
+BOARD_PREBUILT_DTBOIMAGE := device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dtbo.img
 BOARD_DTBOIMG_PARTITION_SIZE := 8388608 # 8 MiB
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE ?= ext4
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -94,8 +94,8 @@ TARGET_SCREEN_DENSITY ?= 240
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-TARGET_RECOVERY_FSTAB := device/ti/am62x/fstab.am62x
-TARGET_RECOVERY_WIPE := device/ti/am62x/recovery.wipe
+TARGET_RECOVERY_FSTAB := device/variscite/am62x/fstab.am62x
+TARGET_RECOVERY_WIPE := device/variscite/am62x/recovery.wipe
 
 
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
@@ -119,9 +119,9 @@ BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware
 BOARD_KERNEL_CMDLINE += androidboot.hardware=am62x 8250.nr_uarts=10
 BOARD_KERNEL_CMDLINE += mem_sleep_default=deep
 
-DEVICE_MANIFEST_FILE := device/ti/am62x/manifest.xml
+DEVICE_MANIFEST_FILE := device/variscite/am62x/manifest.xml
 
-BOARD_SEPOLICY_DIRS += device/ti/am62x/sepolicy/common/
+BOARD_SEPOLICY_DIRS += device/ti/am62x/sepolicy/common/ device/variscite/am62/sepolicy/common
 ifeq ($(TARGET_SDCARD_BOOT), true)
 BOARD_SEPOLICY_DIRS += device/ti/am62x/sepolicy/sdcard/
 else
@@ -131,35 +131,35 @@ PRODUCT_PRIVATE_SEPOLICY_DIRS += device/ti/am62x/sepolicy-private
 
 # Copy Bootloader prebuilts and prebuilts images
 PRODUCT_COPY_FILES += \
-        vendor/ti/am62x/bootloader/am62x-lp-sk/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk.bin \
-        vendor/ti/am62x/bootloader/am62x-lp-sk/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-hsfs.bin \
-        vendor/ti/am62x/bootloader/am62x-lp-sk/tispl.bin:$(TARGET_OUT)/tispl-am62x-lp-sk.bin \
-        vendor/ti/am62x/bootloader/am62x-lp-sk/u-boot.img:$(TARGET_OUT)/u-boot-am62x-lp-sk.img \
-        vendor/ti/am62x/bootloader/am62x-sk/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk.bin \
-        vendor/ti/am62x/bootloader/am62x-sk/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-hsfs.bin \
-        vendor/ti/am62x/bootloader/am62x-sk/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk.bin \
-        vendor/ti/am62x/bootloader/am62x-sk/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk.img \
-        vendor/ti/am62x/bootloader/am62x-lp-sk-dfu/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-dfu.bin \
-        vendor/ti/am62x/bootloader/am62x-lp-sk-dfu/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-dfu-hsfs.bin \
-        vendor/ti/am62x/bootloader/am62x-lp-sk-dfu/tispl.bin:$(TARGET_OUT)/tispl-am62x-lp-sk-dfu.bin \
-        vendor/ti/am62x/bootloader/am62x-lp-sk-dfu/u-boot.img:$(TARGET_OUT)/u-boot-am62x-lp-sk-dfu.img \
-        vendor/ti/am62x/bootloader/am62x-sk-dfu/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu.bin \
-        vendor/ti/am62x/bootloader/am62x-sk-dfu/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu-hsfs.bin \
-        vendor/ti/am62x/bootloader/am62x-sk-dfu/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk-dfu.bin \
-        vendor/ti/am62x/bootloader/am62x-sk-dfu/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk-dfu.img \
-        vendor/ti/am62x/binaries/persist.img:$(TARGET_OUT)/persist.img \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dtbo.img:$(TARGET_OUT)/dtbo-unsigned.img
+        vendor/variscite/am62x/bootloader/am62x-lp-sk/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk.bin \
+        vendor/variscite/am62x/bootloader/am62x-lp-sk/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-hsfs.bin \
+        vendor/variscite/am62x/bootloader/am62x-lp-sk/tispl.bin:$(TARGET_OUT)/tispl-am62x-lp-sk.bin \
+        vendor/variscite/am62x/bootloader/am62x-lp-sk/u-boot.img:$(TARGET_OUT)/u-boot-am62x-lp-sk.img \
+        vendor/variscite/am62x/bootloader/am62x-sk/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk.bin \
+        vendor/variscite/am62x/bootloader/am62x-sk/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-hsfs.bin \
+        vendor/variscite/am62x/bootloader/am62x-sk/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk.bin \
+        vendor/variscite/am62x/bootloader/am62x-sk/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk.img \
+        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-dfu.bin \
+        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-dfu-hsfs.bin \
+        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/tispl.bin:$(TARGET_OUT)/tispl-am62x-lp-sk-dfu.bin \
+        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/u-boot.img:$(TARGET_OUT)/u-boot-am62x-lp-sk-dfu.img \
+        vendor/variscite/am62x/bootloader/am62x-sk-dfu/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu.bin \
+        vendor/variscite/am62x/bootloader/am62x-sk-dfu/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu-hsfs.bin \
+        vendor/variscite/am62x/bootloader/am62x-sk-dfu/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk-dfu.bin \
+        vendor/variscite/am62x/bootloader/am62x-sk-dfu/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk-dfu.img \
+        vendor/variscite/am62x/binaries/persist.img:$(TARGET_OUT)/persist.img \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dtbo.img:$(TARGET_OUT)/dtbo-unsigned.img
 
 # Copy Android Flashing Script
 PRODUCT_COPY_FILES += \
-        device/ti/am62x/flashall.sh:$(TARGET_OUT)/flashall.sh \
+        device/variscite/am62x/flashall.sh:$(TARGET_OUT)/flashall.sh \
 
 # Copy snagrecover config file
 PRODUCT_COPY_FILES += \
-        device/ti/am62x/config/dfu/am62x-sk-evm.yaml:$(TARGET_OUT)/am62x-sk-evm.yaml
+        device/variscite/am62x/config/dfu/am62x-sk-evm.yaml:$(TARGET_OUT)/am62x-sk-evm.yaml
 
 # Copy kernel modules into /vendor/lib/modules
-BOARD_ALL_MODULES := $(shell find device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE) -type f -iname '*.ko')
+BOARD_ALL_MODULES := $(shell find device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE) -type f -iname '*.ko')
 BOARD_VENDOR_KERNEL_MODULES += $(BOARD_ALL_MODULES)
 
 # USB Hal
@@ -188,80 +188,80 @@ BOARD_HOSTAPD_DRIVER := NL80211
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES += \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/zsmalloc.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/zram.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti-msgmgr.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_sci.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_sci_pm_domains.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-omap-usb2.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/syscon-clk.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/tee.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-ringacc.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/irq-ti-sci-intr.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sci-clk.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-psil-lib.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-udma.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/reset-ti-sci.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/irq-ti-sci-inta.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/reset-ti-syscon.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-udma-glue.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rtc-ti-k3.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/optee-rng.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sa2ul.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/cma_heap.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/system_heap.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/gpio-davinci.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/gpio-pca953x.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/gpio-regulator.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/drm_dma_helper.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/omap_hwspinlock.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-omap.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-mux.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-mux-pca954x.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ili210x.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/irq-pruss-intc.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/leds-tlc591xx.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/omap-mailbox.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/palmas.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sdhci_am654.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mux-core.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mux-mmio.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/davinci_mdio.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mdio-bitbang.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mdio-gpio.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/cdns-dphy-rx.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/cdns-dphy.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-cadence-torrent.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-can-transceiver.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-gmii-sel.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-j721e-wiz.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pwm-tiecap.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pwm-tiehrpwm.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/palmas-regulator.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pru_rproc.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_common.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_dsp_remoteproc.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_m4_remoteproc.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_r5_remoteproc.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rpmsg_kdrv.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rpmsg_kdrv_switch.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rpmsg_ns.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/virtio_rpmsg_bus.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pruss.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/spi-cadence-quadspi.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/spi-omap2-mcspi.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/optee.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3_bandgap.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3_j72xx_bandgap.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dwc3-am62.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dwc3-haps.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dwc3-of-simple.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/tps6598x.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rti_wdt.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-dev.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/tidss.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sii902x.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/display-connector.ko \
-        device/ti/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/panel-simple.ko
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/zsmalloc.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/zram.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti-msgmgr.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_sci.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_sci_pm_domains.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-omap-usb2.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/syscon-clk.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/tee.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-ringacc.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/irq-ti-sci-intr.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sci-clk.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-psil-lib.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-udma.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/reset-ti-sci.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/irq-ti-sci-inta.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/reset-ti-syscon.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3-udma-glue.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rtc-ti-k3.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/optee-rng.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sa2ul.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/cma_heap.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/system_heap.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/gpio-davinci.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/gpio-pca953x.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/gpio-regulator.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/drm_dma_helper.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/omap_hwspinlock.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-omap.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-mux.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-mux-pca954x.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ili210x.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/irq-pruss-intc.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/leds-tlc591xx.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/omap-mailbox.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/palmas.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sdhci_am654.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mux-core.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mux-mmio.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/davinci_mdio.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mdio-bitbang.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mdio-gpio.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/cdns-dphy-rx.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/cdns-dphy.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-cadence-torrent.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-can-transceiver.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-gmii-sel.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/phy-j721e-wiz.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pwm-tiecap.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pwm-tiehrpwm.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/palmas-regulator.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pru_rproc.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_common.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_dsp_remoteproc.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_m4_remoteproc.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/ti_k3_r5_remoteproc.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rpmsg_kdrv.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rpmsg_kdrv_switch.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rpmsg_ns.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/virtio_rpmsg_bus.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pruss.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/spi-cadence-quadspi.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/spi-omap2-mcspi.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/optee.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3_bandgap.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/k3_j72xx_bandgap.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dwc3-am62.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dwc3-haps.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dwc3-of-simple.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/tps6598x.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/rti_wdt.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/i2c-dev.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/tidss.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sii902x.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/display-connector.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/panel-simple.ko
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD +=  $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES)

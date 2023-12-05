@@ -18,3 +18,5 @@ modalias_handling enabled
 
 /dev/media*               0660   system     camera
 /dev/v4l-subdev*          0660   system     camera
+/dev/ttyS5     0660 bluetooth  bluetooth
+/sys/class/backlight/backlight/brightness 0660 system system

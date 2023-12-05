@@ -3,3 +3,4 @@ type dtbo_block_device, dev_type;
 type persist_block_device, dev_type;
 
 allow persist_block_device labeledfs:filesystem associate;
+type sysfs_rfkill, sysfs_type, fs_type;

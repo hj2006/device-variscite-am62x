@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-PRODUCT_SOONG_NAMESPACES += device/variscite/am62x/
+PRODUCT_SOONG_NAMESPACES += device/variscite/am62x_var_som/
 
 # AVB
 ifeq ($(TARGET_BUILD_VARIANT), user)
@@ -38,7 +38,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/retrofit.mk)
 
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
-DEVICE_PACKAGE_OVERLAYS := device/variscite/am62x/overlay
+DEVICE_PACKAGE_OVERLAYS := device/variscite/am62x_var_som/overlay
 
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
@@ -78,7 +78,11 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
 # Add wifi-related packages
-PRODUCT_PACKAGES += libwpa_client wpa_supplicant hostapd wificond wpa_cli
+PRODUCT_PACKAGES += libwpa_client wpa_supplicant hostapd wificond wpa_cli \
+		    wpa_supplicant.conf
+
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
+
 PRODUCT_PROPERTY_OVERRIDES += wifi.interface=wlan0 \
                               wifi.supplicant_scan_interval=15
 
@@ -87,9 +91,8 @@ PRODUCT_COPY_FILES += \
 
 # Wifi configuration files
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/wifi/wpa_supplicant.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant.conf \
-    device/ti/am62x/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf \
-    device/ti/am62x/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf
+    device/variscite/am62x_var_som/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf \
+    device/variscite/am62x_var_som/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf
 
 PRODUCT_PACKAGES += \
 	android.hardware.fastboot@1.1 \
@@ -176,7 +179,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Public Libraries
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+    device/variscite/am62x_var_som/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 
 # Vulkan
 PRODUCT_COPY_FILES += \
@@ -194,7 +197,8 @@ PRODUCT_PACKAGES += \
     android.hardware.audio@6.0-impl \
     android.hardware.audio.effect@6.0-impl
 
-PRODUCT_PACKAGES += audio.primary.am62x
+
+PRODUCT_PACKAGES += audio.primary.am62x_var_som
 
 # Audio USB HAL
 PRODUCT_PACKAGES += \
@@ -203,12 +207,13 @@ PRODUCT_PACKAGES += \
 # audio policy configuration
 USE_XML_AUDIO_POLICY_CONF := 1
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/audio_hal_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.am62x.xml \
-    device/variscite/am62x/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+    device/variscite/am62x_var_som/audio_hal_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.am62x_var_som.xml \
+    device/variscite/am62x_var_som/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
     frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
     frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+    frameworks/native/data/etc/android.hardware.ethernet.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.ethernet.xml \
     frameworks/av/media/libeffects/data/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
 
 # Low level audio tools for debugging
@@ -218,6 +223,23 @@ PRODUCT_PACKAGES_DEBUG += \
     tinymix \
     tinypcminfo \
     cplay
+
+# WiFi HAL
+PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0-service \
+    wificond \
+    WifiOverlay
+
+
+# Broadcome WiFi Firmware
+PRODUCT_COPY_FILES += \
+    device/variscite/am62x_var_som/bluetooth/bt_vendor.conf:vendor/etc/bluetooth/bt_vendor.conf
+
+
+# Bluetooth HAL
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-impl \
+    android.hardware.bluetooth@1.0-service
 
 # USB HAL
 PRODUCT_PACKAGES += \
@@ -247,40 +269,40 @@ PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.software.voice_recognizers.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.voice_recognizers.xml \
         frameworks/native/data/etc/android.hardware.ethernet.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.ethernet.xml \
         frameworks/native/data/etc/android.software.device_admin.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_admin.xml \
-        device/variscite/am62x/android.hardware.hardware_keystore.optee-keymaster.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.optee-keymaster.xml \
+        device/variscite/am62x_var_som/android.hardware.hardware_keystore.optee-keymaster.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.optee-keymaster.xml \
         frameworks/native/data/etc/android.software.secure_lock_screen.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.secure_lock_screen.xml
 
 PRODUCT_COPY_FILES += \
-        device/variscite/am62x/init.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.am62x.rc \
-        device/variscite/am62x/init.am62x.zygote_wakelock.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.zygote_wakelock.rc \
-        device/variscite/am62x/init.am62x.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.usb.rc \
-        device/variscite/am62x/ueventd.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
+        device/variscite/am62x_var_som/init.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.am62x.rc \
+        device/variscite/am62x_var_som/init.am62x.zygote_wakelock.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.zygote_wakelock.rc \
+        device/variscite/am62x_var_som/init.am62x.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.am62x.usb.rc \
+        device/variscite/am62x_var_som/ueventd.am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
 
 # fstab
 ifeq ($(TARGET_SDCARD_BOOT), true)
 ifeq ($(TARGET_AVB_ENABLE), true)
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/variscite/am62x/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x_var_som/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x_var_som/fstab.am62x.avb.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 else
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/fstab.am62x.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/variscite/am62x/fstab.am62x.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x_var_som/fstab.am62x.sdcard:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x_var_som/fstab.am62x.sdcard:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 endif
 else
 ifeq ($(TARGET_AVB_ENABLE), true)
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/fstab.am62x.avb:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/variscite/am62x/fstab.am62x.avb:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x_var_som/fstab.am62x.avb:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x_var_som/fstab.am62x.avb:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 else
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/fstab.am62x:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
-    device/variscite/am62x/fstab.am62x:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
+    device/variscite/am62x_var_som/fstab.am62x:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.am62x \
+    device/variscite/am62x_var_som/fstab.am62x:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.am62x
 endif
 endif
 # RecoveryOS
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/init.recovery.am62x.rc:recovery/root/vendor/etc/init/init.recovery.am62x.rc
+    device/variscite/am62x_var_som/init.recovery.am62x.rc:recovery/root/vendor/etc/init/init.recovery.am62x.rc
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -290,7 +312,7 @@ PRODUCT_COPY_FILES += \
 
 # Media configuration
 PRODUCT_COPY_FILES += \
-        device/variscite/am62x/am62x.media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
+        device/variscite/am62x_var_som/am62x.media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
 
 # Memtrack
 PRODUCT_PACKAGES += \
@@ -307,7 +329,7 @@ PRODUCT_PACKAGES += \
 # Enable USB Camera
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.5-external-service
 PRODUCT_COPY_FILES += \
-    device/variscite/am62x/camera/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
+    device/variscite/am62x_var_som/camera/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
 
 PRODUCT_COPY_FILES +=  \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -317,8 +339,8 @@ PRODUCT_COPY_FILES +=  \
 
 # CSI Camera using libcamera
 PRODUCT_COPY_FILES += \
-     device/variscite/am62x/camera/camera_hal.yaml:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/camera_hal.yaml \
-     device/variscite/am62x/camera/android.hardware.camera.provider@2.5-service_64_am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.camera.provider@2.5-service_64_am62x.rc
+     device/variscite/am62x_var_som/camera/camera_hal.yaml:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/camera_hal.yaml \
+     device/variscite/am62x_var_som/camera/android.hardware.camera.provider@2.5-service_64_am62x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.camera.provider@2.5-service_64_am62x.rc
 
 PRODUCT_PACKAGES_DEBUG += cam
 
@@ -332,6 +354,19 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
         Launcher3QuickStep \
         WallpaperPicker
+
+# can tools
+PRODUCT_PACKAGES += \
+    candump \
+    cansend \
+    cangen \
+    canfdtest \
+    cangw \
+    canplayer \
+    cansniffer \
+    isotprecv \
+    isotpsend \
+    isotpserver
 
 #
 # Enable bluetooth
@@ -350,4 +385,4 @@ PRODUCT_PACKAGES_DEBUG += cabin_demo
 $(call inherit-product-if-exists, hardware/ti/am62x/am62x.mk)
 
 # Include vendor binaries
-$(call inherit-product-if-exists, vendor/variscite/am62x/am62x.mk)
+$(call inherit-product-if-exists, vendor/ti/am62x/am62x.mk)

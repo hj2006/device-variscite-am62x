@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 
-TARGET_BOARD_PLATFORM := am62x-var-som
-TARGET_BOOTLOADER_BOARD_NAME := am62x-var-som
+TARGET_BOARD_PLATFORM := am62x_var_som
+TARGET_BOOTLOADER_BOARD_NAME := am62x_var_som
 
 # AVB
 ifeq ($(TARGET_BUILD_VARIANT), user)
@@ -90,12 +90,12 @@ BOARD_SUPER_PARTITION_SIZE := 4831838208
 BOARD_DB_DYNAMIC_PARTITIONS_SIZE := 2411724800
 BOARD_SUPER_PARTITION_METADATA_DEVICE := super
 
-TARGET_SCREEN_DENSITY ?= 240
+TARGET_SCREEN_DENSITY ?= 160
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-TARGET_RECOVERY_FSTAB := device/variscite/am62x/fstab.am62x
-TARGET_RECOVERY_WIPE := device/variscite/am62x/recovery.wipe
+TARGET_RECOVERY_FSTAB := device/variscite/am62x_var_som/fstab.am62x
+TARGET_RECOVERY_WIPE := device/variscite/am62x_var_som/recovery.wipe
 
 
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
@@ -104,59 +104,50 @@ BOARD_RAMDISK_OFFSET := 0xd0000000
 BOARD_MKBOOTIMG_ARGS := --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version 2
-ifneq ($(TARGET_BUILD_VARIANT), user)
-BOARD_KERNEL_CMDLINE += no_console_suspend console=ttyS2,115200
-BOARD_KERNEL_CMDLINE += printk.devkmsg=on
-endif
+BOARD_KERNEL_CMDLINE += no_console_suspend androidboot.vendor.sysrq=1 service_locator.enable=1 earlycon=ns16550a,mmio32,0x02800000 consoleblank=0 androidboot.first_stage_console=1
+BOARD_KERNEL_CMDLINE += console=ttyS0,115200n8 androidboot.console=ttyS0 printk.devkmsg=on
 ifeq ($(TARGET_SDCARD_BOOT), true)
 BOARD_KERNEL_CMDLINE += androidboot.boot_devices=bus@f0000/fa00000.mmc
 else
 BOARD_KERNEL_CMDLINE += androidboot.boot_devices=bus@f0000/fa10000.mmc
 endif
 BOARD_KERNEL_CMDLINE += init=/init
-BOARD_KERNEL_CMDLINE += cma=512M
+BOARD_KERNEL_CMDLINE += cma=640M
 BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware
 BOARD_KERNEL_CMDLINE += androidboot.hardware=am62x 8250.nr_uarts=10
 BOARD_KERNEL_CMDLINE += mem_sleep_default=deep
+BOARD_KERNEL_CMDLINE += loop.max_part=7
 
-DEVICE_MANIFEST_FILE := device/variscite/am62x/manifest.xml
+DEVICE_MANIFEST_FILE := device/variscite/am62x_var_som/manifest.xml
 
-BOARD_SEPOLICY_DIRS += device/ti/am62x/sepolicy/common/ device/variscite/am62/sepolicy/common
+BOARD_SEPOLICY_DIRS += device/variscite/am62x_var_som/sepolicy/common/ device/variscite/am62/sepolicy/common
 ifeq ($(TARGET_SDCARD_BOOT), true)
-BOARD_SEPOLICY_DIRS += device/ti/am62x/sepolicy/sdcard/
+BOARD_SEPOLICY_DIRS += device/variscite/am62x_var_som/sepolicy/sdcard/
 else
-BOARD_SEPOLICY_DIRS += device/ti/am62x/sepolicy/mmc/
+BOARD_SEPOLICY_DIRS += device/variscite/am62x_var_som/sepolicy/mmc/
 endif
-PRODUCT_PRIVATE_SEPOLICY_DIRS += device/ti/am62x/sepolicy-private
+PRODUCT_PRIVATE_SEPOLICY_DIRS += device/variscite/am62x_var_som/sepolicy-private
 
 # Copy Bootloader prebuilts and prebuilts images
 PRODUCT_COPY_FILES += \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk.bin \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-hsfs.bin \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk/tispl.bin:$(TARGET_OUT)/tispl-am62x-lp-sk.bin \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk/u-boot.img:$(TARGET_OUT)/u-boot-am62x-lp-sk.img \
-        vendor/variscite/am62x/bootloader/am62x-sk/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk.bin \
-        vendor/variscite/am62x/bootloader/am62x-sk/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-hsfs.bin \
-        vendor/variscite/am62x/bootloader/am62x-sk/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk.bin \
-        vendor/variscite/am62x/bootloader/am62x-sk/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk.img \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-dfu.bin \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-lp-sk-dfu-hsfs.bin \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/tispl.bin:$(TARGET_OUT)/tispl-am62x-lp-sk-dfu.bin \
-        vendor/variscite/am62x/bootloader/am62x-lp-sk-dfu/u-boot.img:$(TARGET_OUT)/u-boot-am62x-lp-sk-dfu.img \
-        vendor/variscite/am62x/bootloader/am62x-sk-dfu/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu.bin \
-        vendor/variscite/am62x/bootloader/am62x-sk-dfu/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu-hsfs.bin \
-        vendor/variscite/am62x/bootloader/am62x-sk-dfu/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk-dfu.bin \
-        vendor/variscite/am62x/bootloader/am62x-sk-dfu/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk-dfu.img \
-        vendor/variscite/am62x/binaries/persist.img:$(TARGET_OUT)/persist.img \
+        vendor/variscite/bootloader/am62x-sk/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk.bin \
+        vendor/variscite/bootloader/am62x-sk/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-hsfs.bin \
+        vendor/variscite/bootloader/am62x-sk/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk.bin \
+        vendor/variscite/bootloader/am62x-sk/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk.img \
+        vendor/variscite/bootloader/am62x-sk-dfu/tiboot3.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu.bin \
+        vendor/variscite/bootloader/am62x-sk-dfu/tiboot3-hsfs.bin:$(TARGET_OUT)/tiboot3-am62x-sk-dfu-hsfs.bin \
+        vendor/variscite/bootloader/am62x-sk-dfu/tispl.bin:$(TARGET_OUT)/tispl-am62x-sk-dfu.bin \
+        vendor/variscite/bootloader/am62x-sk-dfu/u-boot.img:$(TARGET_OUT)/u-boot-am62x-sk-dfu.img \
+        vendor/variscite/binaries/persist.img:$(TARGET_OUT)/persist.img \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/dtbo.img:$(TARGET_OUT)/dtbo-unsigned.img
 
 # Copy Android Flashing Script
 PRODUCT_COPY_FILES += \
-        device/variscite/am62x/flashall.sh:$(TARGET_OUT)/flashall.sh \
+        device/variscite/am62x_var_som/flashall.sh:$(TARGET_OUT)/flashall.sh \
 
 # Copy snagrecover config file
 PRODUCT_COPY_FILES += \
-        device/variscite/am62x/config/dfu/am62x-sk-evm.yaml:$(TARGET_OUT)/am62x-sk-evm.yaml
+        device/variscite/am62x_var_som/config/dfu/am62x-sk-evm.yaml:$(TARGET_OUT)/am62x-sk-evm.yaml
 
 # Copy kernel modules into /vendor/lib/modules
 BOARD_ALL_MODULES := $(shell find device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE) -type f -iname '*.ko')
@@ -179,13 +170,22 @@ TINYALSA_NO_ADD_NEW_CTRLS := true
 TINYALSA_NO_CTL_GET_ID := true
 TINYCOMPRESS_TSTAMP_IS_LONG := true
 
-# generic wifi
-WPA_SUPPLICANT_VERSION := VER_0_8_X
-BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_ti
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ti
-BOARD_WPA_SUPPLICANT_DRIVER := NL80211
-BOARD_HOSTAPD_DRIVER := NL80211
-WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
+# -------@block_wifi-------
+BOARD_WLAN_DEVICE            := bcmdhd
+WPA_SUPPLICANT_VERSION       := VER_0_8_X
+BOARD_WPA_SUPPLICANT_DRIVER  := NL80211
+BOARD_HOSTAPD_DRIVER         := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB               := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB        := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+
+WIFI_HIDL_FEATURE_DUAL_INTERFACE := false
+
+# -------@block_bluetooth-------
+# Broadcom BT
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/variscite/am62x_var_som/bluetooth
+BOARD_CUSTOM_BT_CONFIG := $(BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR)/vnd_config.txt
+BOARD_HAVE_BLUETOOTH_BCM := true
+
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES += \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/zsmalloc.ko \
@@ -223,7 +223,10 @@ BOARD_VENDOR_RAMDISK_KERNEL_MODULES += \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/leds-tlc591xx.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/omap-mailbox.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/palmas.ko \
+	device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pwrseq_emmc.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sdhci_am654.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/adin.ko \
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/at803x.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mux-core.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/mux-mmio.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/davinci_mdio.ko \
@@ -262,6 +265,7 @@ BOARD_VENDOR_RAMDISK_KERNEL_MODULES += \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/tidss.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/sii902x.ko \
         device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/display-connector.ko \
-        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/panel-simple.ko
+        device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/panel-simple.ko \
+	device/variscite/am62x-kernel/kernel/$(TARGET_KERNEL_USE)/pwm_bl.ko
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD +=  $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES)

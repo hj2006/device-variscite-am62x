@@ -73,6 +73,7 @@ FDISK_CMDS
 		cp ${tiboot3bin} boot/tiboot3.bin
 		cp tispl-${board}.bin boot/tispl.bin
 		cp u-boot-${board}.img boot/u-boot.img
+		sync
 		umount boot
 		rm -r boot
 		echo "Insert SD card on board, Power ON and interrupt U-Boot to go in console to do this command:"

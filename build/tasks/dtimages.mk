@@ -5,27 +5,13 @@
 # dtbo.img, and the resulting $(PRODUCT_OUT)/dtbo.img will be created with
 # Android build system, by exploiting BOARD_PREBUILT_DTBOIMAGE variable.
 
-ifneq ($(filter am62x%, $(TARGET_DEVICE)),)
+ifneq ($(filter am62x_var_som%, $(TARGET_DEVICE)),)
 
 MKDTIMG := system/libufdt/utils/src/mkdtboimg.py
 DTBIMAGE := $(PRODUCT_OUT)/dtb.img
 
 
 # Please keep this list fixed: add new files in the end of the list
-DTB_FILES := \
-	$(LOCAL_DTB)/k3-am625-sk.dtb \
-	$(LOCAL_DTB)/k3-am62-lp-sk.dtb
-
-$(DTBIMAGE): $(DTB_FILES)
-	cat $^ > $@
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := dtbimage
-LOCAL_LICENSE_KINDS := legacy_notice
-LOCAL_LICENSE_CONDITIONS := notice
-LOCAL_ADDITIONAL_DEPENDENCIES := $(DTBIMAGE)
-include $(BUILD_PHONY_PACKAGE)
-
-droidcore: dtbimage
-
+DTB_FILES += \
+       device/variscite/am62x-kernel/kernel/6.1/k3-am625-var-som-symphony.dtb
 endif

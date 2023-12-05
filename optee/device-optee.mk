@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-$(call inherit-product, device/ti/am62x/optee/kmgk.mk)
+$(call inherit-product, device/variscite/am62x_var_som/optee/kmgk.mk)
 
 # optee
 OPTEE_OS_DIR := vendor/linaro/optee-os
@@ -28,14 +28,14 @@ OPTEE_CFG_CORE_HEAP_SIZE=131072
 CFG_TEE_FS_PARENT_PATH := /mnt/vendor/persist/tee
 CFG_TEE_CLIENT_LOAD_PATH := /vendor/lib/
 
-BUILD_OPTEE_MK := device/ti/am62x/optee/build_optee.mk
+BUILD_OPTEE_MK := device/variscite/am62x_var_som/optee/build_optee.mk
 
 PRODUCT_PACKAGES += \
     libteec \
     tee-supplicant
 
 PRODUCT_COPY_FILES += \
-    device/ti/am62x/optee/init.optee.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.optee.rc
+    device/variscite/am62x_var_som/optee/init.optee.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.optee.rc
 
 # tee-supplicant test plugin
 PRODUCT_PACKAGES_DEBUG += f07bfc66-958c-4a15-99c0-260e4e7375dd.plugin

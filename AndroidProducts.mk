@@ -15,8 +15,8 @@
 #
 
 PRODUCT_MAKEFILES := \
-	$(LOCAL_DIR)/am62x-var-som.mk
+	$(LOCAL_DIR)/am62x_var_som.mk
 	
 COMMON_LUNCH_CHOICES := \
-	am62x-var-som-userdebug \
-	am62x-var-som-user
+	am62x_var_som-userdebug \
+	am62x_var_som-user

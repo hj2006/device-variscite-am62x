@@ -1,6 +1,7 @@
 on early-init
     # mount debugfs
     mount debugfs /sys/kernel/debug /sys/kernel/debug mode=755
+    start console
 
 on init
     # Boot time fs tuning
@@ -10,6 +11,7 @@ on init
     write /sys/block/sda/queue/nr_requests 256
     write /dev/sys/fs/by-name/userdata/data_io_flag 56
     write /dev/sys/fs/by-name/userdata/node_io_flag 56
+    write /sys/class/vtconsole/vtcon1/bind 0
 
     # ZRAM setup
     write /proc/sys/vm/page-cluster 0
@@ -52,6 +54,28 @@ on init
     chmod 0664 /dev/cpuset/camera-daemon-mid-high-group/tasks
 
     chown system system /dev/cpuset/cgroup.procs
+    write /sys/bus/platform/drivers/sdhci-am654/unbind "fa20000.mmc"
+    chmod 665 /sys/class/rfkill/rfkill0/state
+    chown system system /sys/class/rfkill/rfkill0/state
+    write /sys/class/rfkill/rfkill0/state 1
+    write /sys/bus/platform/drivers/sdhci-am654/bind "fa20000.mmc"
+
+    # Prepare for wifi
+    setprop wlan.interface wlan0
+    setprop wifi.interface wlan0
+    setprop wifi.direct.interface p2p0
+    setprop wifi.concurrent.interface wlan0
+
+    # Prepare for bluetooth
+    chmod 665 /sys/class/rfkill/rfkill1/state
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill1/state
+    write /sys/class/rfkill/rfkill1/state 0
+    chown bluetooth bluetooth /sys/class/mmc_host/fa20000.mmc/fa20000.mmc:0001/device
+    symlink /sys/class/mmc_host/fa20000.mmc/fa20000.mmc:0001/device /dev/bt_mmc
+    chmod 665 /dev/bt_mmc
+    chown bluetooth bluetooth /dev/bt_mmc
+    chmod 0665 /sys/devices/platform/backlight/backlight/backlight/brightness
+    chown system system /sys/devices/platform/backlight/backlight/backlight/brightness
 
     start watchdogd
 
@@ -125,6 +149,8 @@ on property:sys.boot_completed=1
     write /dev/cpuctl/nnapi-hal/cpu.shares 20480
     write /dev/cpuctl/rt/cpu.shares 20480
     write /dev/cpuctl/top-app/cpu.shares 20480
+    chown system system /dev/cpuset/cgroup.procs
+    setprop sys.wlan.powerup 1
 
 on property:sys.boot_completed=1 && property:sys.wifitracing.started=1
     chmod 0755 /sys/kernel/tracing
@@ -143,3 +169,36 @@ service pvrsrvinit /vendor/bin/pvrsrvctl --start
     group root
     oneshot
 
+service rm_wlan_mods /system/bin/modprobe -r -d /vendor/lib/modules brcmfmac
+    class main
+    user root
+    group root system
+    seclabel u:r:modprobe:s0
+    disabled
+    oneshot
+
+service insmod_wlan_mods /system/bin/modprobe -d /vendor/lib/modules brcmfmac.ko
+    class main
+    user root
+    group root system
+    seclabel u:r:modprobe:s0
+    disabled
+    oneshot
+
+on property:sys.wlan.powerup=1
+    write /sys/bus/platform/drivers/sdhci-am654/unbind "fa20000.mmc"
+    chmod 665 /sys/class/rfkill/rfkill0/state
+    chown system system /sys/class/rfkill/rfkill0/state
+    write /sys/class/rfkill/rfkill0/state 1
+    write /sys/bus/platform/drivers/sdhci-am654/bind "fa20000.mmc"
+    start insmod_wlan_mods
+    stop vendor.wifi_hal_legacy
+    start vendor.wifi_hal_legacy
+
+on property:sys.wlan.powerup=0
+    write /sys/bus/platform/drivers/sdhci-am654/unbind "fa20000.mmc"
+    chmod 665 /sys/class/rfkill/rfkill0/state
+    chown system system /sys/class/rfkill/rfkill0/state
+    write /sys/class/rfkill/rfkill0/state 0
+    start rm_wlan_mods
+    stop vendor.wifi_hal_legacy
